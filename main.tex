@@ -1,0 +1,702 @@
+\documentclass[12pt]{article}
+
+% import packages and library
+\usepackage[utf8]{inputenc}
+\usepackage[svgnames,table]{xcolor}
+\usepackage[T1]{fontenc} 
+\usepackage{csquotes}
+\usepackage{amsmath,amsthm,amsfonts,mathtools}
+\usepackage{natbib}
+\usepackage{subfig}
+\usepackage[colorlinks, linkcolor=RoyalBlue, citecolor=VioletRed]{hyperref}
+\usepackage[capitalise,nameinlink,noabbrev]{cleveref}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[tikz]{mdframed}
+\usetikzlibrary{shadings}
+\usepackage{nameref, tcolorbox}
+\tcbuselibrary{skins, theorems}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{etoolbox} 
+\usepackage{array}
+\usepackage[acronym]{glossaries}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{soul}
+
+% math config
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\set{\{}{\}}
+\DeclarePairedDelimiter\anglebrac{\langle}{\rangle}
+
+\newcommand{\pr}[1]{\bigbreak \colorbox{Yellow}{$#1$} \smallbreak}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{flushleft}
+
+\tableofcontents
+
+\clearpage
+\section{Idempotent}
+\pr{A \vdash(A \land A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $A$  & Assumption Introduction &  \\
+    2 & 1 & $(A\land A)$  & Conjunction Introduction & 1, 1 \\
+\end{tabular}
+
+\pr{(A \land A) \vdash A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\land A)$  & Assumption Introduction &  \\
+    2 & 1 & $A$  & Conjunction Elimination & 1 \\
+\end{tabular}
+
+\pr{A \vdash (A \lor A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $A$  & Assumption Introduction &  \\
+    2 & 1 & $(A\lor A)$  & Disjunction Introduction & 1 \\
+\end{tabular}
+
+\pr{(A \lor A) \vdash A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\lor A)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 1 & $A$  & Disjunction Elimination & 1, 2, 2, 2, 2 \\
+\end{tabular}
+
+\section{Commutative}
+\pr{(A \land B) \vdash (B \land A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\land B)$  & Assumption Introduction &  \\
+    2 & 1 & $A$  & Conjunction Elimination & 1 \\
+    3 & 1 & $B$  & Conjunction Elimination & 1 \\
+    4 & 1 & $(B\land A)$  & Conjunction Introduction & 2, 3 \\
+\end{tabular}
+
+\pr{(A \lor B) \vdash (B \lor A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\lor B)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(B\lor A)$  & Disjunction Introduction & 2 \\
+    4 & 4 & $B$  & Assumption Introduction &  \\
+    5 & 4 & $(B\lor A)$  & Disjunction Introduction & 4 \\
+    6 & 1 & $(B\lor A)$  & Disjunction Elimination & 1, 2, 3, 4, 5 \\
+\end{tabular}
+
+\section{Associative}
+\pr{(A\land (B\land C)) \vdash ((A\land B)\land C)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\land (B\land C))$  & Assumption Introduction &  \\
+    2 & 1 & $A$  & Conjunction Elimination & 1 \\
+    3 & 1 & $(B\land C)$  & Conjunction Elimination & 1 \\
+    4 & 1 & $B$  & Conjunction Elimination & 3 \\
+    5 & 1 & $C$  & Conjunction Elimination & 3 \\
+    6 & 1 & $(A\land B)$  & Conjunction Introduction & 2, 4 \\
+    7 & 1 & $((A\land B)\land C)$  & Conjunction Introduction & 5, 6 \\
+\end{tabular}
+
+\pr{((A\land B)\land C) \vdash (A\land (B\land C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\land B)\land C)$  & Assumption Introduction &  \\
+    2 & 1 & $(A\land B)$  & Conjunction Elimination & 1 \\
+    3 & 1 & $A$  & Conjunction Elimination & 2 \\
+    4 & 1 & $B$  & Conjunction Elimination & 2 \\
+    5 & 1 & $C$  & Conjunction Elimination & 1 \\
+    6 & 1 & $(B\land C)$  & Conjunction Introduction & 4, 5 \\
+    7 & 1 & $(A\land (B\land C))$  & Conjunction Introduction & 3, 6 \\
+\end{tabular}
+
+\pr{(A\lor (B\lor C)) \vdash ((A\lor B)\lor C)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\lor (B\lor C))$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(A\lor B)$  & Disjunction Introduction & 2 \\
+    4 & 2 & $((A\lor B)\lor C)$  & Disjunction Introduction & 3 \\
+    5 & 5 & $(B\lor C)$  & Assumption Introduction &  \\
+    6 & 6 & $B$  & Assumption Introduction &  \\
+    7 & 7 & $C$  & Assumption Introduction &  \\
+    8 & 6 & $(A\lor B)$  & Disjunction Introduction & 6 \\
+    9 & 6 & $((A\lor B)\lor C)$  & Disjunction Introduction & 8 \\
+    10 & 7 & $((A\lor B)\lor C)$  & Disjunction Introduction & 7 \\
+    11 & 5 & $((A\lor B)\lor C)$  & Disjunction Elimination & 5, 6, 9, 7, 10 \\
+    12 & 1 & $((A\lor B)\lor C)$  & Disjunction Elimination & 1, 2, 4, 5, 11 \\
+\end{tabular}
+
+\pr{((A\lor B)\lor C) \vdash (A\lor (B\lor C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\lor B)\lor C)$  & Assumption Introduction &  \\
+    2 & 2 & $(A\lor B)$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 3 & $(A\lor (B\lor C))$  & Disjunction Introduction & 3 \\
+    5 & 5 & $B$  & Assumption Introduction &  \\
+    6 & 5 & $(B\lor C)$  & Disjunction Introduction & 5 \\
+    7 & 5 & $(A\lor (B\lor C))$  & Disjunction Introduction & 6 \\
+    8 & 2 & $(A\lor (B\lor C))$  & Disjunction Elimination & 2, 3, 4, 5, 7 \\
+    9 & 9 & $C$  & Assumption Introduction &  \\
+    10 & 9 & $(B\lor C)$  & Disjunction Introduction & 9 \\
+    11 & 9 & $(A\lor (B\lor C))$  & Disjunction Introduction & 10 \\
+    12 & 1 & $(A\lor (B\lor C))$  & Disjunction Elimination & 1, 2, 8, 9, 11 \\
+\end{tabular}
+
+\section{Distributive}
+\pr{(A \land (B \lor C)) \vdash ((A \land B) \lor (A \land C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\land (B\lor C))$  & Assumption Introduction &  \\
+    2 & 1 & $A$  & Conjunction Elimination & 1 \\
+    3 & 1 & $(B\lor C)$  & Conjunction Elimination & 1 \\
+    4 & 4 & $B$  & Assumption Introduction &  \\
+    5 & 1, 4 & $(A\land B)$  & Conjunction Introduction & 2, 4 \\
+    6 & 1, 4 & $((A\land B)\lor (A\land C))$  & Disjunction Introduction & 5 \\
+    7 & 7 & $C$  & Assumption Introduction &  \\
+    8 & 1, 7 & $(A\land C)$  & Conjunction Introduction & 2, 7 \\
+    9 & 1, 7 & $((A\land B)\lor (A\land C))$  & Disjunction Introduction & 8 \\
+    10 & 1 & $((A\land B)\lor (A\land C))$  & Disjunction Elimination & 3, 4, 6, 7, 9 \\
+\end{tabular}
+
+\pr{((A \land B) \lor (A \land C)) \vdash (A \land (B \lor C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\land B)\lor (A\land C))$  & Assumption Introduction &  \\
+    2 & 2 & $(A\land B)$  & Assumption Introduction &  \\
+    3 & 2 & $A$  & Conjunction Elimination & 2 \\
+    4 & 2 & $B$  & Conjunction Elimination & 2 \\
+    5 & 2 & $(B\lor C)$  & Disjunction Introduction & 4 \\
+    6 & 2 & $(A\land (B\lor C))$  & Conjunction Introduction & 3, 5 \\
+    7 & 7 & $(A\land C)$  & Assumption Introduction &  \\
+    8 & 7 & $A$  & Conjunction Elimination & 7 \\
+    9 & 7 & $C$  & Conjunction Elimination & 7 \\
+    10 & 7 & $(B\lor C)$  & Disjunction Introduction & 9 \\
+    11 & 7 & $(A\land (B\lor C))$  & Conjunction Introduction & 8, 10 \\
+    12 & 1 & $(A\land (B\lor C))$  & Disjunction Elimination & 1, 2, 6, 7, 11 \\
+\end{tabular}
+
+\pr{(A \lor(B \land C)) \vdash ((A \lor B) \land (A \lor C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\lor (B\land C))$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(A\lor B)$  & Disjunction Introduction & 2 \\
+    4 & 2 & $(A\lor C)$  & Disjunction Introduction & 2 \\
+    5 & 2 & $((A\lor B)\land (A\lor C))$  & Conjunction Introduction & 3, 4 \\
+    6 & 6 & $(B\land C)$  & Assumption Introduction &  \\
+    7 & 6 & $B$  & Conjunction Elimination & 6 \\
+    8 & 6 & $(A\lor B)$  & Disjunction Introduction & 7 \\
+    9 & 6 & $C$  & Conjunction Elimination & 6 \\
+    10 & 6 & $(A\lor C)$  & Disjunction Introduction & 9 \\
+    11 & 6 & $((A\lor B)\land (A\lor C))$  & Conjunction Introduction & 8, 10 \\
+    12 & 1 & $((A\lor B)\land (A\lor C))$  & Disjunction Elimination & 1, 2, 5, 6, 11 \\
+\end{tabular}
+
+\pr{((A \lor B) \land (A \lor C)) \vdash (A \lor(B \land C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\lor B)\land (A\lor C))$  & Assumption Introduction &  \\
+    2 & 1 & $(A\lor B)$  & Conjunction Elimination & 1 \\
+    3 & 1 & $(A\lor C)$  & Conjunction Elimination & 1 \\
+    4 & 4 & $A$  & Assumption Introduction &  \\
+    5 & 5 & $B$  & Assumption Introduction &  \\
+    6 & 6 & $C$  & Assumption Introduction &  \\
+    7 & 4 & $(A\lor (B\land C))$  & Disjunction Introduction & 4 \\
+    8 & 5, 6 & $(B\land C)$  & Conjunction Introduction & 5, 6 \\
+    9 & 5, 6 & $(A\lor (B\land C))$  & Disjunction Introduction & 8 \\
+    10 & 1, 6 & $(A\lor (B\land C))$  & Disjunction Elimination & 2, 4, 7, 5, 9 \\
+    11 & 1 & $(A\lor (B\land C))$  & Disjunction Elimination & 3, 4, 7, 6, 10 \\
+\end{tabular}
+
+\section{de Morgan’s Laws}
+\pr{(\neg A\lor \neg B) \vdash \neg (A\land B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\neg A\lor \neg B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg A$  & Assumption Introduction &  \\
+    3 & 3 & $\neg B$  & Assumption Introduction &  \\
+    4 & 4 & $(A\land B)$  & Assumption Introduction &  \\
+    5 & 4 & $A$  & Conjunction Elimination & 4 \\
+    6 & 2, 4 & $\bot $  & Negation Elimination & 5, 2 \\
+    7 & 2 & $\neg (A\land B)$  & Negation Introduction & 4, 6 \\
+    8 & 4 & $B$  & Conjunction Elimination & 4 \\
+    9 & 3, 4 & $\bot $  & Negation Elimination & 8, 3 \\
+    10 & 3 & $\neg (A\land B)$  & Negation Introduction & 4, 9 \\
+    11 & 1 & $\neg (A\land B)$  & Disjunction Elimination & 1, 2, 7, 3, 10 \\
+\end{tabular}
+
+\pr{\neg (A\land B) \vdash (\neg A\lor \neg B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg (A\land B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg (\neg A\lor \neg B)$  & Assumption Introduction &  \\
+    3 & 3 & $\neg A$  & Assumption Introduction &  \\
+    4 & 3 & $(\neg A\lor \neg B)$  & Disjunction Introduction & 3 \\
+    5 & 2, 3 & $\bot $  & Negation Elimination & 4, 2 \\
+    6 & 2 & $\neg \neg A$  & Negation Introduction & 3, 5 \\
+    7 & 7 & $\neg B$  & Assumption Introduction &  \\
+    8 & 7 & $(\neg A\lor \neg B)$  & Disjunction Introduction & 7 \\
+    9 & 2, 7 & $\bot $  & Negation Elimination & 8, 2 \\
+    10 & 2 & $\neg \neg B$  & Negation Introduction & 7, 9 \\
+    11 & 2 & $(\neg \neg A\land \neg \neg B)$  & Conjunction Introduction & 6, 10 \\
+    12 & 2 & $\neg \neg A$  & Conjunction Elimination & 11 \\
+    13 & 2, 3 & $\bot $  & Negation Elimination & 3, 12 \\
+    14 & 2 & $A$  & Reducto Absurdium & 3, 13 \\
+    15 & 2 & $\neg \neg B$  & Conjunction Elimination & 11 \\
+    16 & 2, 7 & $\bot $  & Negation Elimination & 7, 15 \\
+    17 & 2 & $B$  & Reducto Absurdium & 7, 16 \\
+    18 & 2 & $(A\land B)$  & Conjunction Introduction & 14, 17 \\
+    19 & 1, 2 & $\bot $  & Negation Elimination & 18, 1 \\
+    20 & 1 & $(\neg A\lor \neg B)$  & Reducto Absurdium & 2, 19 \\
+\end{tabular}
+
+\pr{(\neg A\land \neg B) \vdash \neg (A\lor B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\neg A\land \neg B)$  & Assumption Introduction &  \\
+    2 & 1 & $\neg A$  & Conjunction Elimination & 1 \\
+    3 & 1 & $\neg B$  & Conjunction Elimination & 1 \\
+    4 & 4 & $(A\lor B)$  & Assumption Introduction &  \\
+    5 & 5 & $\neg B$  & Assumption Introduction &  \\
+    6 & 6 & $B$  & Assumption Introduction &  \\
+    7 & 5, 6 & $\bot $  & Negation Elimination & 6, 5 \\
+    8 & 5, 6 & $A$  & Falsum & 7 \\
+    9 & 9 & $A$  & Assumption Introduction &  \\
+    10 & 4, 5 & $A$  & Disjunction Elimination & 4, 9, 9, 6, 8 \\
+    11 & 1, 4, 5 & $\bot $  & Negation Elimination & 10, 2 \\
+    12 & 1, 4 & $B$  & Reducto Absurdium & 5, 11 \\
+    13 & 1, 4 & $\bot $  & Negation Elimination & 12, 3 \\
+    14 & 1 & $\neg (A\lor B)$  & Negation Introduction & 4, 13 \\
+\end{tabular}
+
+\pr{\neg (A\lor B) \vdash (\neg A\land \neg B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg (A\lor B)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(A\lor B)$  & Disjunction Introduction & 2 \\
+    4 & 1, 2 & $\bot $  & Negation Elimination & 3, 1 \\
+    5 & 1 & $\neg A$  & Negation Introduction & 2, 4 \\
+    6 & 6 & $B$  & Assumption Introduction &  \\
+    7 & 6 & $(A\lor B)$  & Disjunction Introduction & 6 \\
+    8 & 1, 6 & $\bot $  & Negation Elimination & 7, 1 \\
+    9 & 1 & $\neg B$  & Negation Introduction & 6, 8 \\
+    10 & 1 & $(\neg A\land \neg B)$  & Conjunction Introduction & 5, 9 \\
+\end{tabular}
+
+\section{Double Negation}
+\pr{\neg \neg A \vdash A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg \neg A$  & Assumption Introduction &  \\
+    2 & 2 & $\neg A$  & Assumption Introduction &  \\
+    3 & 1, 2 & $\bot $  & Negation Elimination & 2, 1 \\
+    4 & 1 & $A$  & Reducto Absurdium & 2, 3 \\
+\end{tabular}
+
+\pr{A \vdash \neg \neg A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $A$  & Assumption Introduction &  \\
+    2 & 2 & $\neg A$  & Assumption Introduction &  \\
+    3 & 1, 2 & $\bot $  & Negation Elimination & 1, 2 \\
+    4 & 1 & $\neg \neg A$  & Negation Introduction & 2, 3 \\
+\end{tabular}
+
+\section{Implication Definition}
+\pr{(\neg A\lor B) \vdash (A \rightarrow B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\neg A\lor B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg A$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 2, 3 & $\bot $  & Negation Elimination & 3, 2 \\
+    5 & 2, 3 & $B$  & Falsum & 4 \\
+    6 & 2 & $(A\rightarrow B)$  & Implication Introduction & 3, 5 \\
+    7 & 7 & $B$  & Assumption Introduction &  \\
+    8 & 3, 7 & $(A\land B)$  & Conjunction Introduction & 7, 3 \\
+    9 & 3, 7 & $B$  & Conjunction Elimination & 8 \\
+    10 & 7 & $(A\rightarrow B)$  & Implication Introduction & 3, 9 \\
+    11 & 1 & $(A\rightarrow B)$  & Disjunction Elimination & 1, 2, 6, 7, 10 \\
+\end{tabular}
+
+\pr{(A \rightarrow B) \vdash (\neg A\lor B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg (\neg A\lor B)$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $B$  & Implication Elimination & 3, 1 \\
+    5 & 1, 3 & $(\neg A\lor B)$  & Disjunction Introduction & 4 \\
+    6 & 1, 2, 3 & $\bot $  & Negation Elimination & 5, 2 \\
+    7 & 1, 2 & $\neg A$  & Negation Introduction & 3, 6 \\
+    8 & 1, 2 & $(\neg A\lor B)$  & Disjunction Introduction & 7 \\
+    9 & 1, 2 & $\bot $  & Negation Elimination & 8, 2 \\
+    10 & 1 & $(\neg A\lor B)$  & Reducto Absurdium & 2, 9 \\
+\end{tabular}
+ 
+\section{Transposition}
+\pr{(A \rightarrow B) \vdash (\neg B \rightarrow \neg A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg B$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $B$  & Implication Elimination & 3, 1 \\
+    5 & 1, 2, 3 & $\bot $  & Negation Elimination & 4, 2 \\
+    6 & 1, 2 & $\neg A$  & Negation Introduction & 3, 5 \\
+    7 & 1 & $(\neg B\rightarrow \neg A)$  & Implication Introduction & 2, 6 \\
+\end{tabular}
+
+\pr{(\neg B \rightarrow \neg A) \vdash (A \rightarrow B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\neg B\rightarrow \neg A)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 3 & $\neg A$  & Assumption Introduction &  \\
+    4 & 2, 3 & $\bot $  & Negation Elimination & 2, 3 \\
+    5 & 2 & $\neg \neg A$  & Negation Introduction & 3, 4 \\
+    6 & 6 & $\neg B$  & Assumption Introduction &  \\
+    7 & 1, 6 & $\neg A$  & Implication Elimination & 6, 1 \\
+    8 & 1, 2, 6 & $\bot $  & Negation Elimination & 7, 5 \\
+    9 & 1, 2 & $B$  & Reducto Absurdium & 6, 8 \\
+    10 & 1 & $(A\rightarrow B)$  & Implication Introduction & 2, 9 \\
+\end{tabular}
+
+\section{Exportation}
+\pr{((A \land B) \rightarrow C) \vdash (A \rightarrow (B \rightarrow C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\land B)\rightarrow C)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 3 & $B$  & Assumption Introduction &  \\
+    4 & 2, 3 & $(A\land B)$  & Conjunction Introduction & 2, 3 \\
+    5 & 1, 2, 3 & $C$  & Implication Elimination & 4, 1 \\
+    6 & 1, 2 & $(B\rightarrow C)$  & Implication Introduction & 3, 5 \\
+    7 & 1 & $(A\rightarrow (B\rightarrow C))$  & Implication Introduction & 2, 6 \\
+\end{tabular}
+
+\pr{(A \rightarrow (B \rightarrow C)) \vdash ((A \land B) \rightarrow C)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow (B\rightarrow C))$  & Assumption Introduction &  \\
+    2 & 2 & $(A\land B)$  & Assumption Introduction &  \\
+    3 & 2 & $A$  & Conjunction Elimination & 2 \\
+    4 & 2 & $B$  & Conjunction Elimination & 2 \\
+    5 & 1, 2 & $(B\rightarrow C)$  & Implication Elimination & 3, 1 \\
+    6 & 1, 2 & $C$  & Implication Elimination & 4, 5 \\
+    7 & 1 & $((A\land B)\rightarrow C)$  & Implication Introduction & 2, 6 \\
+\end{tabular}
+
+\section{Trivial Proof}
+\pr{B \vdash (A \rightarrow B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $B$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 1, 2 & $(A\land B)$  & Conjunction Introduction & 1, 2 \\
+    4 & 1, 2 & $B$  & Conjunction Elimination & 3 \\
+    5 & 1 & $(A\rightarrow B)$  & Implication Introduction & 2, 4 \\
+\end{tabular}
+
+\pr{\neg A \vdash (A \rightarrow B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg A$  & Assumption Introduction &  \\
+    2 & 1 & $(\neg A\lor B)$  & Disjunction Introduction & 1 \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $\bot $  & Negation Elimination & 3, 1 \\
+    5 & 1, 3 & $B$  & Falsum & 4 \\
+    6 & 1 & $(A\rightarrow B)$  & Implication Introduction & 3, 5 \\
+\end{tabular}
+
+\pr{A \vdash (\neg A \rightarrow B)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $A$  & Assumption Introduction &  \\
+    2 & 1 & $(A\lor B)$  & Disjunction Introduction & 1 \\
+    3 & 3 & $\neg A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $\bot $  & Negation Elimination & 1, 3 \\
+    5 & 1, 3 & $B$  & Falsum & 4 \\
+    6 & 1 & $(\neg A\rightarrow B)$  & Implication Introduction & 3, 5 \\
+\end{tabular}
+
+\pr{(A\rightarrow (B\rightarrow C)) \vdash (B\rightarrow (A\rightarrow C))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow (B\rightarrow C))$  & Assumption Introduction &  \\
+    2 & 2 & $B$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $(B\rightarrow C)$  & Implication Elimination & 3, 1 \\
+    5 & 1, 2, 3 & $C$  & Implication Elimination & 2, 4 \\
+    6 & 1, 2 & $(A\rightarrow C)$  & Implication Introduction & 3, 5 \\
+    7 & 1 & $(B\rightarrow (A\rightarrow C))$  & Implication Introduction & 2, 6 \\
+\end{tabular}
+
+\pr{\neg (A \lor B) \vdash \neg A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg (A\lor B)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(A\lor B)$  & Disjunction Introduction & 2 \\
+    4 & 1, 2 & $\bot $  & Negation Elimination & 3, 1 \\
+    5 & 1 & $\neg A$  & Negation Introduction & 2, 4 \\
+\end{tabular}
+
+\pr{\vdash (A \lor \neg A)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg (A\lor \neg A)$  & Assumption Introduction &  \\
+    2 & 2 & $A$  & Assumption Introduction &  \\
+    3 & 2 & $(A\lor \neg A)$  & Disjunction Introduction & 2 \\
+    4 & 1, 2 & $\bot $  & Negation Elimination & 3, 1 \\
+    5 & 1 & $\neg A$  & Negation Introduction & 2, 4 \\
+    6 & 1 & $(A\lor \neg A)$  & Disjunction Introduction & 5 \\
+    7 & 1 & $\bot $  & Negation Elimination & 6, 1 \\
+    8 &  & $(A\lor \neg A)$  & Reducto Absurdium & 1, 7 \\
+\end{tabular}
+
+\section{Modus Tollens}
+\pr{(A \rightarrow B), \neg B \vdash \neg A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg B$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $B$  & Implication Elimination & 3, 1 \\
+    5 & 1, 2, 3 & $\bot $  & Negation Elimination & 4, 2 \\
+    6 & 1, 2 & $\neg A$  & Negation Introduction & 3, 5 \\
+\end{tabular}
+
+\section{Hypothetical Syllogism}
+\pr{(A \rightarrow B), (B \rightarrow C) \vdash (A \rightarrow C)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\rightarrow B)$  & Assumption Introduction &  \\
+    2 & 2 & $(B\rightarrow C)$  & Assumption Introduction &  \\
+    3 & 3 & $A$  & Assumption Introduction &  \\
+    4 & 1, 3 & $B$  & Implication Elimination & 3, 1 \\
+    5 & 1, 2, 3 & $C$  & Implication Elimination & 4, 2 \\
+    6 & 1, 2 & $(A\rightarrow C)$  & Implication Introduction & 3, 5 \\
+\end{tabular}
+
+\section{Disjunctive Syllogism}
+\pr{(A \lor B), \neg B \vdash A}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(A\lor B)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg B$  & Assumption Introduction &  \\
+    3 & 3 & $B$  & Assumption Introduction &  \\
+    4 & 2, 3 & $\bot $  & Negation Elimination & 3, 2 \\
+    5 & 2, 3 & $A$  & Falsum & 4 \\
+    6 & 6 & $A$  & Assumption Introduction &  \\
+    7 & 1, 2 & $A$  & Disjunction Elimination & 1, 6, 6, 3, 5 \\
+\end{tabular}
+
+\section{Construction Dilemma}
+\pr{((A \rightarrow B) \land (C \rightarrow D)), (A \lor C) \vdash (B \lor D)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\rightarrow B)\land (C\rightarrow D))$  & Assumption Introduction &  \\
+    2 & 2 & $(A\lor C)$  & Assumption Introduction &  \\
+    3 & 1 & $(A\rightarrow B)$  & Conjunction Elimination & 1 \\
+    4 & 1 & $(C\rightarrow D)$  & Conjunction Elimination & 1 \\
+    5 & 5 & $A$  & Assumption Introduction &  \\
+    6 & 1, 5 & $B$  & Implication Elimination & 5, 3 \\
+    7 & 1, 5 & $(B\lor D)$  & Disjunction Introduction & 6 \\
+    8 & 8 & $C$  & Assumption Introduction &  \\
+    9 & 1, 8 & $D$  & Implication Elimination & 8, 4 \\
+    10 & 1, 8 & $(B\lor D)$  & Disjunction Introduction & 9 \\
+    11 & 1, 2 & $(B\lor D)$  & Disjunction Elimination & 2, 5, 7, 8, 10 \\
+\end{tabular}
+
+\section{Destructive Dilemma}
+\pr{((A \rightarrow B) \land (C \rightarrow D)), (\neg B \lor \neg D) \vdash (\neg A \lor \neg C)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $((A\rightarrow B)\land (C\rightarrow D))$  & Assumption Introduction &  \\
+    2 & 2 & $(\neg B\lor \neg D)$  & Assumption Introduction &  \\
+    3 & 1 & $(A\rightarrow B)$  & Conjunction Elimination & 1 \\
+    4 & 1 & $(C\rightarrow D)$  & Conjunction Elimination & 1 \\
+    5 & 5 & $\neg (\neg A\lor \neg C)$  & Assumption Introduction &  \\
+    6 & 6 & $\neg A$  & Assumption Introduction &  \\
+    7 & 6 & $(\neg A\lor \neg C)$  & Disjunction Introduction & 6 \\
+    8 & 5, 6 & $\bot $  & Negation Elimination & 7, 5 \\
+    9 & 5 & $A$  & Reducto Absurdium & 6, 8 \\
+    10 & 1, 5 & $B$  & Implication Elimination & 9, 3 \\
+    11 & 11 & $\neg C$  & Assumption Introduction &  \\
+    12 & 11 & $(\neg A\lor \neg C)$  & Disjunction Introduction & 11 \\
+    13 & 5, 11 & $\bot $  & Negation Elimination & 12, 5 \\
+    14 & 5 & $C$  & Reducto Absurdium & 11, 13 \\
+    15 & 1, 5 & $D$  & Implication Elimination & 14, 4 \\
+    16 & 16 & $\neg B$  & Assumption Introduction &  \\
+    17 & 1, 5, 16 & $\bot $  & Negation Elimination & 10, 16 \\
+    18 & 1, 5, 16 & $\neg D$  & Falsum & 17 \\
+    19 & 19 & $\neg D$  & Assumption Introduction &  \\
+    20 & 1, 2, 5 & $\neg D$  & Disjunction Elimination & 2, 16, 18, 19, 19 \\
+    21 & 1, 2, 5 & $\bot $  & Negation Elimination & 15, 20 \\
+    22 & 1, 2 & $(\neg A\lor \neg C)$  & Reducto Absurdium & 5, 21 \\
+\end{tabular}
+
+\section{Qualifier Negation}
+\pr{\neg \forall x F(x) \vdash \exists x \neg F(x)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg \forall xF(x)$  & Assumption Introduction &  \\
+    2 & 2 & $\neg \exists x\neg F(x)$  & Assumption Introduction &  \\
+    3 & 3 & $\neg F(c)$  & Assumption Introduction &  \\
+    4 & 3 & $\exists x\neg F(x)$  & Existential Introduction & 3 \\
+    5 & 2, 3 & $\bot $  & Negation Elimination & 4, 2 \\
+    6 & 2 & $F(c)$  & Reducto Absurdium & 3, 5 \\
+    7 & 2 & $\forall xF(x)$  & Universal Introduction & 6 \\
+    8 & 1, 2 & $\bot $  & Negation Elimination & 7, 1 \\
+    9 & 1 & $\exists x\neg F(x)$  & Reducto Absurdium & 2, 8 \\
+\end{tabular}
+
+\pr{\exists x \neg F(x) \vdash \neg \forall x F(x)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\exists x\neg F(x)$  & Assumption Introduction &  \\
+    2 & 2 & $\forall xF(x)$  & Assumption Introduction &  \\
+    3 & 2 & $F(c)$  & Universal Elimination & 2 \\
+    4 & 4 & $\neg F(c)$  & Assumption Introduction &  \\
+    5 & 2, 4 & $\bot $  & Negation Elimination & 3, 4 \\
+    6 & 1, 2 & $\bot $  & Existential Elimination & 1, 4, 5 \\
+    7 & 1 & $\neg \forall xF(x)$  & Negation Introduction & 2, 6 \\
+\end{tabular}
+
+\pr{\neg \exists x F(x) \vdash \forall x \neg F(x)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\neg \exists xF(x)$  & Assumption Introduction &  \\
+    2 & 2 & $F(c)$  & Assumption Introduction &  \\
+    3 & 2 & $\exists xF(x)$  & Existential Introduction & 2 \\
+    4 & 1, 2 & $\bot $  & Negation Elimination & 3, 1 \\
+    5 & 1 & $\neg F(c)$  & Negation Introduction & 2, 4 \\
+    6 & 1 & $\forall x\neg F(x)$  & Universal Introduction & 5 \\
+\end{tabular}
+
+\pr{\forall x \neg F(x) \vdash \neg \exists x F(x)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\forall x\neg F(x)$  & Assumption Introduction &  \\
+    2 & 2 & $\exists xF(x)$  & Assumption Introduction &  \\
+    3 & 3 & $F(c)$  & Assumption Introduction &  \\
+    4 & 1 & $\neg F(c)$  & Universal Elimination & 1 \\
+    5 & 1, 3 & $\bot $  & Negation Elimination & 3, 4 \\
+    6 & 1, 2 & $\bot $  & Existential Elimination & 2, 3, 5 \\
+    7 & 1 & $\neg \exists xF(x)$  & Negation Introduction & 2, 6 \\
+\end{tabular}
+
+\section{Qualifier Unification}
+\pr{(\forall x F(x) \land \forall x G(x)) \vdash \forall x (F(x) \land G(x))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\forall xF(x)\land \forall xG(x))$  & Assumption Introduction &  \\
+    2 & 1 & $\forall xF(x)$  & Conjunction Elimination & 1 \\
+    3 & 1 & $F(c)$  & Universal Elimination & 2 \\
+    4 & 1 & $\forall xG(x)$  & Conjunction Elimination & 1 \\
+    5 & 1 & $G(c)$  & Universal Elimination & 4 \\
+    6 & 1 & $(F(c)\land G(c))$  & Conjunction Introduction & 3, 5 \\
+    7 & 1 & $\forall x(F(x)\land G(x))$  & Universal Introduction & 6 \\
+\end{tabular}
+
+\pr{\forall x (F(x) \land G(x)) \vdash (\forall x F(x) \land \forall x G(x))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\forall x(F(x)\land G(x))$  & Assumption Introduction &  \\
+    2 & 1 & $(F(c)\land G(c))$  & Universal Elimination & 1 \\
+    3 & 1 & $F(c)$  & Conjunction Elimination & 2 \\
+    4 & 1 & $\forall xF(x)$  & Universal Introduction & 3 \\
+    5 & 1 & $G(c)$  & Conjunction Elimination & 2 \\
+    6 & 1 & $\forall xG(x)$  & Universal Introduction & 5 \\
+    7 & 1 & $(\forall xF(x)\land \forall xG(x))$  & Conjunction Introduction & 4, 6 \\
+\end{tabular}
+
+\pr{(\exists x F(x) \lor \exists x G(x)) \vdash \exists x (F(x) \lor G(x))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $(\exists xF(x)\lor \exists xG(x))$  & Assumption Introduction &  \\
+    2 & 2 & $\exists xF(x)$  & Assumption Introduction &  \\
+    3 & 3 & $F(c)$  & Assumption Introduction &  \\
+    4 & 3 & $(F(c)\lor G(c))$  & Disjunction Introduction & 3 \\
+    5 & 3 & $\exists x(F(x)\lor G(x))$  & Existential Introduction & 4 \\
+    6 & 2 & $\exists x(F(x)\lor G(x))$  & Existential Elimination & 2, 3, 5 \\
+    7 & 7 & $\exists xG(x)$  & Assumption Introduction &  \\
+    8 & 8 & $G(c)$  & Assumption Introduction &  \\
+    9 & 8 & $(F(c)\lor G(c))$  & Disjunction Introduction & 8 \\
+    10 & 8 & $\exists x(F(x)\lor G(x))$  & Existential Introduction & 9 \\
+    11 & 7 & $\exists x(F(x)\lor G(x))$  & Existential Elimination & 7, 8, 10 \\
+    12 & 1 & $\exists x(F(x)\lor G(x))$  & Disjunction Elimination & 1, 2, 6, 7, 11 \\
+\end{tabular}
+
+\pr{\exists x (F(x) \lor G(x)) \vdash (\exists x F(x) \lor \exists x G(x))}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\exists x(F(x)\lor G(x))$  & Assumption Introduction &  \\
+    2 & 2 & $(F(c)\lor G(c))$  & Assumption Introduction &  \\
+    3 & 3 & $F(c)$  & Assumption Introduction &  \\
+    4 & 3 & $\exists xF(x)$  & Existential Introduction & 3 \\
+    5 & 3 & $(\exists xF(x)\lor \exists xG(x))$  & Disjunction Introduction & 4 \\
+    6 & 6 & $G(c)$  & Assumption Introduction &  \\
+    7 & 6 & $\exists xG(x)$  & Existential Introduction & 6 \\
+    8 & 6 & $(\exists xF(x)\lor \exists xG(x))$  & Disjunction Introduction & 7 \\
+    9 & 2 & $(\exists xF(x)\lor \exists xG(x))$  & Disjunction Elimination & 2, 3, 5, 6, 8 \\
+    10 & 1 & $(\exists xF(x)\lor \exists xG(x))$  & Existential Elimination & 1, 2, 9 \\
+\end{tabular}
+
+\section{Qualifier Transposition}
+\pr{\forall x \forall y F(x,y) \vdash \forall y \forall x F(x,y)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\forall x\forall yF(x,y)$  & Assumption Introduction &  \\
+    2 & 1 & $\forall yF(c,y)$  & Universal Elimination & 1 \\
+    3 & 1 & $F(c,d)$  & Universal Elimination & 2 \\
+    4 & 1 & $\forall xF(x,d)$  & Universal Introduction & 3 \\
+    5 & 1 & $\forall y\forall xF(x,y)$  & Universal Introduction & 4 \\
+\end{tabular}
+
+\pr{\exists x \exists y F(x,y) \vdash \exists y \exists x F(x,y)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\exists x\exists yF(x,y)$  & Assumption Introduction &  \\
+    2 & 2 & $\exists yF(c,y)$  & Assumption Introduction &  \\
+    3 & 3 & $F(c,d)$  & Assumption Introduction &  \\
+    4 & 3 & $\exists xF(x,d)$  & Existential Introduction & 3 \\
+    5 & 3 & $\exists y\exists xF(x,y)$  & Existential Introduction & 4 \\
+    6 & 2 & $\exists y\exists xF(x,y)$  & Existential Elimination & 2, 3, 5 \\
+    7 & 1 & $\exists y\exists xF(x,y)$  & Existential Elimination & 1, 2, 6 \\
+\end{tabular}
+
+\section{Trivial Proof with Qualifier}
+\pr{\forall x F(x) \vdash \exists x F(x)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\forall xF(x)$  & Assumption Introduction &  \\
+    2 & 1 & $F(c)$  & Universal Elimination & 1 \\
+    3 & 1 & $\exists xF(x)$  & Existential Introduction & 2 \\
+\end{tabular}
+
+\pr{\exists y \forall x F(x,y) \vdash \forall x \exists y F(x,y)}
+\begin{tabular}{lllll}
+    Line & Assumptions & Formula & Justification & References \\
+    1 & 1 & $\exists y\forall xF(x,y)$  & Assumption Introduction &  \\
+    2 & 2 & $\forall xF(x,c)$  & Assumption Introduction &  \\
+    3 & 2 & $F(d,c)$  & Universal Elimination & 2 \\
+    4 & 2 & $\exists yF(d,y)$  & Existential Introduction & 3 \\
+    5 & 2 & $\forall x\exists yF(x,y)$  & Universal Introduction & 4 \\
+    6 & 1 & $\forall x\exists yF(x,y)$  & Existential Elimination & 1, 2, 5 \\
+\end{tabular}
+
+\end{flushleft}
+\end{document}
